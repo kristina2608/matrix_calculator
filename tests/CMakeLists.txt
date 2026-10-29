@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.20)
 
-# Поиск системной библиотеки Google Test
+# Поиск системной библиотеки Google Test, установленной через apt
 find_package(GTest REQUIRED)
 
 add_executable(matrix_tests test_matrix.cpp ../src/matrix.cpp)
 
-# Привязка системных библиотек GTest
+# Линковка с системными таргетами GTest
 target_link_libraries(matrix_tests PRIVATE GTest::GTest GTest::Main)
 
 target_include_directories(matrix_tests PRIVATE ${CMAKE_SOURCE_DIR}/include)

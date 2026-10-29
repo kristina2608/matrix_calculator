@@ -19,6 +19,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y cmake g++ doxygen graphviz valgrind libgtest-dev
 
+      # Теперь CMake отработает без вызовов git clone
       - name: Configure CMake
         run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
 
