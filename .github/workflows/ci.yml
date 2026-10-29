@@ -19,12 +19,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y cmake g++ doxygen graphviz valgrind git
 
-      # Исправление ошибки 128: принудительный сброс сетевых блокировок Git на сервере
-      - name: Reset Git Global Config
+      # Исправление ошибки 128: Добавление каталога в безопасные для Git на новых образах Ubuntu
+      - name: Configure Git Safe Directory
         run: |
-          git config --global --unset-all http.proxy || true
-          git config --global --unset-all https.proxy || true
-          git config --global url."https://github.com/".insteadOf git@github.com: || true
+          git config --global --add safe.directory '*'
 
       - name: Configure CMake
         run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
