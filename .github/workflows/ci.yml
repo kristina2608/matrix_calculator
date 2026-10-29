@@ -14,15 +14,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Устанавливаем gtest из официального репозитория пакетов Ubuntu
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y cmake g++ doxygen graphviz valgrind libgtest-dev
 
-      # Принудительно отключаем встроенный FetchContent в CMake, чтобы он не вызывал git
       - name: Configure CMake
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCONFIG_USE_SYSTEM_GTEST=ON
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
 
       - name: Build
         run: cmake --build build --parallel $(nproc)
