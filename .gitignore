@@ -1,0 +1,24 @@
+# Артефакты сборки CMake
+build/
+CMakeCache.txt
+CMakeFiles/
+CMakeSettings.json
+Makefile
+cmake_install.cmake
+
+# Скомпилированные исполняемые файлы и библиотеки
+matrix_calculator
+matrix_tests
+*.o
+*.a
+*.so
+
+# Временные файлы редакторов и системный мусор
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Логи тестирования и Valgrind
+Testing/
+*.log
