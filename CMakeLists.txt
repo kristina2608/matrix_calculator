@@ -13,5 +13,5 @@ add_executable(matrix_calculator src/main.cpp src/matrix.cpp)
 # Активация механизма тестов CTest
 enable_testing()
 
-# Подключение подпапки с тестами (там отработает find_package)
+# Подключение подпапки с тестами
 add_subdirectory(tests)
