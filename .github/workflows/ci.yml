@@ -14,19 +14,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Исправление ошибки 128: Добавление каталога в безопасные на самом раннем этапе сборки
-      - name: Fix Git Dubious Ownership
-        run: |
-          git config --global --add safe.directory /home/runner/work/matrix_calculator/matrix_calculator
-          git config --global --add safe.directory '*'
-
+      # Устанавливаем gtest из официального репозитория пакетов Ubuntu
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake g++ doxygen graphviz valgrind git
+          sudo apt-get install -y cmake g++ doxygen graphviz valgrind libgtest-dev
 
+      # Принудительно отключаем встроенный FetchContent в CMake, чтобы он не вызывал git
       - name: Configure CMake
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCONFIG_USE_SYSTEM_GTEST=ON
 
       - name: Build
         run: cmake --build build --parallel $(nproc)
