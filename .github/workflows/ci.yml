@@ -1,0 +1,54 @@
+name: Matrix Calculator CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ doxygen graphviz valgrind
+
+      - name: Configure CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Debug
+
+      - name: Build
+        run: cmake --build build --parallel $(nproc)
+
+      - name: Run tests
+        run: cd build && ctest --verbose --output-on-failure
+
+      - name: Check memory leaks
+        run: |
+          valgrind --leak-check=full --error-exitcode=1 \
+          ./build/tests/matrix_tests
+
+      - name: Check if Doxyfile exists
+        id: check_doxyfile
+        run: |
+          if [ -f Doxyfile ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate documentation
+        if: steps.check_doxyfile.outputs.exists == 'true'
+        run: doxygen Doxyfile
+
+      - name: Upload documentation
+        if: steps.check_doxyfile.outputs.exists == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation
+          path: docs/html
